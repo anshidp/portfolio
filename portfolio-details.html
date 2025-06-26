@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Details</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --secondary-color: #8b5cf6;
+            --accent-color: #06b6d4;
+            --dark-color: #1e293b;
+            --light-color: #f8fafc;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem 0;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .project-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .project-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .project-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .project-category {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            display: inline-block;
+            font-weight: 500;
+            position: relative;
+            z-index: 2;
+        }
+
+        .loading-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 300px;
+            flex-direction: column;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--border-color);
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .project-content {
+            padding: 3rem 2rem;
+        }
+
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .image-card {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .image-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .image-card img {
+            width: 100%;
+            height: 600px;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+        }
+
+        .image-card:hover img {
+            transform: scale(1.05);
+        }
+
+        /* .project-details {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 3rem;
+            align-items: start;
+        } */
+
+        .info-card {
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border-color);
+            position: sticky;
+            top: 2rem;
+        }
+
+        .info-card h4 {
+            color: var(--dark-color);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-list {
+            list-style: none;
+        }
+
+        .info-list li {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .info-list li:last-child {
+            border-bottom: none;
+        }
+
+        .info-list li:hover {
+            background: rgba(255, 255, 255, 0.5);
+            margin: 0 -1rem;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            border-radius: 8px;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: var(--dark-color);
+            min-width: 120px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-value {
+            color: var(--text-muted);
+            flex: 1;
+        }
+
+        .description-section h2 {
+            color: var(--dark-color);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .description-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            border-radius: 2px;
+        }
+
+        .description-text {
+            color: var(--text-muted);
+            line-height: 1.8;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .tech-tag {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .features-section {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .features-section h3 {
+            color: var(--dark-color);
+            font-weight: 600;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(139, 92, 246, 0.05));
+            border: 1px solid rgba(99, 102, 241, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            transform: scaleY(0);
+            transform-origin: bottom;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.15);
+            border-color: rgba(99, 102, 241, 0.2);
+        }
+
+        .feature-card:hover::before {
+            transform: scaleY(1);
+        }
+
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        .feature-title {
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .feature-description {
+            color: var(--text-muted);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .error-container {
+            text-align: center;
+            padding: 3rem;
+            color: #dc2626;
+        }
+
+        .error-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.7;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 0.75rem 1rem;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            z-index: 10;
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .project-details {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .image-gallery {
+                grid-template-columns: 1fr;
+            }
+            
+            .project-header h1 {
+                font-size: 2rem;
+            }
+            
+            .project-content {
+                padding: 2rem 1rem;
+            }
+            
+            .info-card {
+                position: static;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .project-header {
+                padding: 2rem 1rem;
+            }
+            
+            .info-list li {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.25rem;
+            }
+            
+            .info-label {
+                min-width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="project-card">
+            <a href="javascript:history.back()" class="back-button">
+                <i class="fas fa-arrow-left me-2"></i>Back
+            </a>
+            
+            <div id="project-container">
+                <div class="loading-container">
+                    <div class="loading-spinner"></div>
+                    <p class="text-muted">Loading project details...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const projects = {
+            expense_tracker: {
+                title: "Expense Tracker",
+                category: "Mobile App",
+                client: "Internal",
+                date: "June 2025",
+                tools: "Flutter, Firebase, Riverpod",
+                projectLink: "https://github.com/anshidp/expense_tracker",
+                images: [
+                    "assets/img/portfolio/expense_tracker 1-portrait.png",
+                    "assets/img/portfolio/expense_tracker2-portrait.png",
+                    "assets/img/portfolio/expense_tracker3-portrait.png"
+                ],
+                description: "Daily Expense Tracker is a thoughtfully designed personal finance app that makes it easy to manage income and expenses on a daily basis. With a clean interface and smooth user experience, it allows users to record transactions, categorize them, and view real-time summaries through dashboards and charts. Features like date-based filters, swipe-to-delete, and visual insights help users understand their spending behavior and maintain better control over their finances — all in one simple, minimal app.",
+                features: [
+                    {
+                        title: "Add Income & Expenses",
+                        description: "Input category, subcategory, amount, and date. Supports both income and expense entries",
+                        icon: "fas fa-plus-circle"
+                    },
+                    {
+                        title: "Dashboard Overview", 
+                        description: "Displays total income, expense, and balance. Donut chart visualization for quick insight",
+                        icon: "fas fa-chart-pie"
+                    },
+                    {
+                        title: "Filter by Date",
+                        description: "View transactions by All, Today, Week, or Month",
+                        icon: "fas fa-filter"
+                    },
+                    {
+                        title: "Transaction History",
+                        description: "List of recent transactions. Swipe to delete (with confirmation)",
+                        icon: "fas fa-history"
+                    },
+                    {
+                        title: "Category Management",
+                        description: "Organized by type and purpose",
+                        icon: "fas fa-tags"
+                    }
+                ]
+            },
+            fitness_tracker: {
+                title: "Fitness Tracker",
+                category: "Mobile App", 
+                client: "StartupX",
+                date: "May 2025",
+                tools: "Flutter, OpenWeatherMap API",
+                projectLink: "https://github.com/anshidp/calorie_tracker",
+                features: [
+                    {
+                        title: "Track Meals",
+                        description: "Monitor daily nutrition intake including breakfast, lunch, dinner, and snacks with detailed food logging",
+                        icon: "fas fa-utensils"
+                    },
+                    {
+                        title: "Calories Burned Tracking", 
+                        description: "Track calories burned from steps via HealthKit integration with real-time step counting",
+                        icon: "fas fa-fire"
+                    },
+                    {
+                        title: "Custom Diet Plans",
+                        description: "Create personalized diet plans tailored to your fitness goals and dietary preferences",
+                        icon: "fas fa-clipboard-list"
+                    },
+                    {
+                        title: "Monthly Nutrition Reports",
+                        description: "Comprehensive monthly reports showing nutrition trends, calorie intake, and health progress",
+                        icon: "fas fa-chart-line"
+                    }
+                ],
+                images: [
+                   "assets/img/portfolio/fitness3.png",
+                   "assets/img/portfolio/fitness2.png",
+                    "assets/img/portfolio/fitness1.png",
+                    
+                   
+                ],
+                description: `I’ve been developing a modern Calorie and Nutrition Tracker using SwiftUI with real-time support from Firebase and Apple HealthKit to help users stay on top of their daily nutrition goals. The app is designed with a focus on clean UI, intuitive user interaction, and personalized diet tracking to support a healthier lifestyle.
+
+This project goes beyond simple calorie logging — it enables users to actively monitor meals, understand nutritional intake, and track burned calories based on real-time step data from HealthKit. Whether the goal is weight loss, maintenance, or muscle gain, the app provides a personalized, data-driven experience for every user.`
+            }
+        };
+
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        function renderProject() {
+            const projectId = getQueryParam('id');
+            const project = projects[projectId];
+            const container = document.getElementById('project-container');
+
+            if (project) {
+                const techTags = project.tools.split(', ').map(tool => 
+                    `<span class="tech-tag">${tool}</span>`
+                ).join('');
+
+                const imageGallery = project.images
+                    .filter(img => img) // Filter out empty strings
+                    .map((img, index) => `
+                        <div class="image-card">
+                            <img src="${img}" alt="${project.title} Screenshot ${index + 1}" 
+                                 onerror="this.parentElement.style.display='none'">
+                        </div>
+                    `).join('');
+
+                container.innerHTML = `
+                    <div class="project-header">
+                        <h1>${project.title}</h1>
+                        
+                    </div>
+                    
+                    <div class="project-content">
+                        <div class="image-gallery">
+                            ${imageGallery}
+                        </div>
+                        
+                        <div class="project-details">
+                           
+                            
+                            <div class="description-section">
+                                <h2>About This Project</h2>
+                                <p class="description-text">${project.description}</p>
+                                 </li>
+                                    ${project.projectLink ? `
+                                    
+                                        
+                                        <a href="${project.projectLink}" target="_blank" class="project-link-btn">
+                                            <i class="fas fa-code"></i>
+                                            View Project
+                                        </a>
+                                    
+                                    ` : ''}
+                                ${project.features ? `
+                                <div class="features-section">
+                                    <h3>
+                                        <i class="fas fa-star" style="color: var(--warning-color);"></i>
+                                        Key Features
+                                    </h3>
+                                    <div class="features-grid">
+                                        ${project.features.map(feature => `
+                                            <div class="feature-card">
+                                                <div class="feature-icon">
+                                                    <i class="${feature.icon}"></i>
+                                                </div>
+                                                <h4 class="feature-title">${feature.title}</h4>
+                                                <p class="feature-description">${feature.description}</p>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = `
+                    <div class="error-container">
+                        <i class="fas fa-exclamation-triangle error-icon"></i>
+                        <h3>Project Not Found</h3>
+                        <p class="text-muted">The requested project could not be found.</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Simulate loading delay for better UX
+        setTimeout(renderProject, 800);
+    </script>
+</body>
+</html>
