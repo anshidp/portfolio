@@ -504,8 +504,55 @@
                 ],
                 description: `I’ve been developing a modern Calorie and Nutrition Tracker using SwiftUI with real-time support from Firebase and Apple HealthKit to help users stay on top of their daily nutrition goals. The app is designed with a focus on clean UI, intuitive user interaction, and personalized diet tracking to support a healthier lifestyle.
 
-This project goes beyond simple calorie logging — it enables users to actively monitor meals, understand nutritional intake, and track burned calories based on real-time step data from HealthKit. Whether the goal is weight loss, maintenance, or muscle gain, the app provides a personalized, data-driven experience for every user.`
-            }
+                This project goes beyond simple calorie logging — it enables users to actively monitor meals, understand nutritional intake, and track burned calories based on real-time step data from HealthKit. Whether the goal is weight loss, maintenance, or muscle gain, the app provides a personalized, data-driven experience for every user.`
+            },
+            united_areechola: {
+                title: "United Areechola",
+                category: "Mobile App",
+                client: "Internal",
+                date: "June 2025",
+                tools: "Flutter, Firebase, Riverpod",
+                projectLink: "https://github.com/anshidp/united_areechola",
+                images: [
+                    "assets/img/united_areechola/asl-portrait.png",
+                    "assets/img/united_areechola/subcription-portrait.png",
+                    "assets/img/united_areechola/bloodGroup-portrait.png"
+                ],
+                description: "United Areechola is a community management mobile and web application built for our village club. The app brings together essential features to manage club activities and serve the community. Members can easily manage monthly subscriptions, record income and expenses, and maintain a blood group directory to help in emergencies. It also supports the village’s ASL (Areechola Super League) football tournament by storing and displaying season information, player stats, and match updates.The app simplifies community coordination, financial management, and health-related support in one central platform, making it an all-in-one digital solution for the village.",
+                features: [
+  {
+    title: "Monthly Subscriptions",
+    description: "Easily manage and record monthly subscription payments from members to support the club’s activities.",
+    icon: "fas fa-calendar-check"
+  },
+  {
+    title: "Income & Expense Records",
+    description: "Save, track, and monitor all financial transactions of the club with clear categorization for transparency.",
+    icon: "fas fa-wallet"
+  },
+  {
+    title: "Blood Group Directory",
+    description: "Maintain a database of members’ blood groups with direct call functionality for quick emergency support.",
+    icon: "fas fa-tint"
+  },
+  {
+    title: "ASL (Areechola Super League) Management",
+    description: "Store and display football league season details, including matches, players, and results of the village league.",
+    icon: "fas fa-futbol"
+  },
+  {
+    title: "Member Directory",
+    description: "Organized listing of all club members with their details for easy access and community coordination.",
+    icon: "fas fa-users"
+  },
+  {
+    title: "Mobile & Web Access",
+    description: "Seamless accessibility on both mobile devices and web platforms to ensure all members can use the app.",
+    icon: "fas fa-laptop-mobile"
+  }
+],
+
+            },
         };
 
         function getQueryParam(param) {
@@ -515,6 +562,8 @@ This project goes beyond simple calorie logging — it enables users to actively
 
         function renderProject() {
             const projectId = getQueryParam('id');
+            console.log("projectId=========")
+            console.log(projectId)
             const project = projects[projectId];
             const container = document.getElementById('project-container');
 
@@ -557,6 +606,10 @@ This project goes beyond simple calorie logging — it enables users to actively
                                             <i class="fas fa-code"></i>
                                             View Project
                                         </a>
+                                        
+                                     
+                    
+
                                     
                                     ` : ''}
                                 ${project.features ? `
